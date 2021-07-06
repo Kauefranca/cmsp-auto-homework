@@ -26,7 +26,6 @@ function sumOfPrevIndexes(obj, target) {
     return sum
 }
 
-
 async function answerForm(page, len) {
     for (i in len) {
         if (len[i] == 0) i += 1
