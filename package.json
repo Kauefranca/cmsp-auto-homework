@@ -1,0 +1,27 @@
+{
+  "name": "cmsp-auto-homework",
+  "version": "1.1.0",
+  "description": "Bot que responde todas as atividades do site CMSP(respostas aleatórias) usando o modulo puppeteer do javascript.",
+  "main": "index.js",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^10.1.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-stealth": "^2.7.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kauefranca/cmsp-auto-homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kauefranca/cmsp-auto-homework/issues"
+  },
+  "homepage": "https://github.com/Kauefranca/cmsp-auto-homework#readme"
+}

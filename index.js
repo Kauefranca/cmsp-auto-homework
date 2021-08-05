@@ -1,37 +1,42 @@
-const puppeteer = require('puppeteer');
 const fs = require('fs');
-const { getAuthToken } = require('./src/getLoggedPage');
-const { validator } = require('./src/authIdValidator');
-const { resolveForm } = require('./src/resolveForm') 
+
+const { launchBrowser } = require('./launchBrowser');
+const { getFormURL } = require('./src/getFormURL');
+const { answerForm } = require('./src/answerForm');
 
 const credentials = JSON.parse(fs.readFileSync('./database/credentials.json'));
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 ;(async () => {
-    const browser = await puppeteer.launch({ defaultViewport: null, headless: false});
-    if (await validator(browser) == false) {
-        await getAuthToken(credentials, browser);
-    }
+    // Função principal.
+    const formLink = await getFormURL(credentials);
+    if (formLink.statusCode != '200') return console.log(`Ocorreu um erro durante o login!\nMotivo: ${formLink.response}\nStatus: ${formLink.statusCode}`);
+    const browser = await launchBrowser();
     const page = await browser.newPage();
-    await page.goto(`https://cmsp-tms.ip.tv/user?auth_token=${JSON.parse(fs.readFileSync('./authid.json'))}`);
+    await page.goto(formLink.response, { waitUntil: 'networkidle2' });
+    const questionsLen = await page.evaluate(() => {
+        return document.querySelectorAll('th.row__title').length;
+    });
 
-    while (true) {
-        try {
-            await page.waitForSelector('tbody tr button', { timeout: 10000});
-            await page.click('tbody tr button');
-            await page.waitForSelector('tbody tr div.collapsed__options button');
-            await sleep(1000);
-            await page.click('tbody tr div.collapsed__options button');
-            await page.waitForSelector('button.fab__submit')
-            await resolveForm(page)
-        }
-        catch {
-            break
-        }
+    if (questionsLen == 0) {
+        await browser.close();
+        return console.log('Você não tem nenhuma atividade pendente.');
     }
-    console.log('Terminei de fazer suas atividades :D');
-    await browser.close()
+
+    for (i = 0; i < questionsLen; i++) {
+        await page.waitForTimeout(1000);
+        questionsLeft = await page.evaluate(() => {
+            return document.querySelectorAll('th.row__title').length;
+        }); 
+        console.log(questionsLeft)
+        if (questionsLeft > 1) console.log(`${questionsLeft} questões restantes.`)
+        else if (questionsLeft == 1) console.log(`Falta apenas 1 questão :D`)
+        else if (questionsLeft == 0) break
+        await page.click('span.MuiIconButton-label');
+        await page.waitForTimeout(300);
+        await page.click('button.apply-btn');
+        await answerForm(page);
+    }
+
+    console.log('Prontinho meu bom, terminei de fazer todas as suas atividaes.')
+    await browser.close();
 })();
