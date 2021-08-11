@@ -1,42 +1,33 @@
 const fs = require('fs');
+const utils = require('./src/utils')
 
-const { launchBrowser } = require('./launchBrowser');
-const { getFormURL } = require('./src/getFormURL');
-const { answerForm } = require('./src/answerForm');
+Object.size = function(obj) {
+  var size = 0,
+    key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) size++;
+  }
+  return size;
+};
 
-const credentials = JSON.parse(fs.readFileSync('./database/credentials.json'));
+const credentials = { 
+  "ra": "000000000000",
+  "digit": "0",
+  "uf": "sp",
+  "code": "abcd1234"
+};
 
 ;(async () => {
-    // Função principal.
-    const formLink = await getFormURL(credentials);
-    if (formLink.statusCode != '200') return console.log(`Ocorreu um erro durante o login!\nMotivo: ${formLink.response}\nStatus: ${formLink.statusCode}`);
-    const browser = await launchBrowser();
-    const page = await browser.newPage();
-    await page.goto(formLink.response, { waitUntil: 'networkidle2' });
-    const questionsLen = await page.evaluate(() => {
-        return document.querySelectorAll('th.row__title').length;
-    });
+  const { xApiKey, room, statusCode } = await utils.getTokens(credentials);
+  if (statusCode != 200) return console.log('\x1b[31m', 'Erro: Usuário não encontrado, verifique suas credenciais e tente novamente.', '\x1b[0m');
+  const taskList = await utils.getTasks(xApiKey, room);
+  var size = Object.size(taskList);
 
-    if (questionsLen == 0) {
-        await browser.close();
-        return console.log('Você não tem nenhuma atividade pendente.');
-    }
+  if (size <= 0) return console.log('\x1b[31m', 'Não encontrei nenhuma tarefa :/.', '\x1b[0m');
+  console.log('\x1b[31m',`${Object.size(taskList)} tarefa(s) encontradas.`, '\x1b[0m');
 
-    for (i = 0; i < questionsLen; i++) {
-        await page.waitForTimeout(1000);
-        questionsLeft = await page.evaluate(() => {
-            return document.querySelectorAll('th.row__title').length;
-        }); 
-        console.log(questionsLeft)
-        if (questionsLeft > 1) console.log(`${questionsLeft} questões restantes.`)
-        else if (questionsLeft == 1) console.log(`Falta apenas 1 questão :D`)
-        else if (questionsLeft == 0) break
-        await page.click('span.MuiIconButton-label');
-        await page.waitForTimeout(300);
-        await page.click('button.apply-btn');
-        await answerForm(page);
-    }
-
-    console.log('Prontinho meu bom, terminei de fazer todas as suas atividaes.')
-    await browser.close();
+  for (questionIndex in taskList) {
+    await utils.answerTask(taskList[questionIndex].id, xApiKey, room);
+    console.log(taskList[questionIndex].title.trim(), '-', '\x1b[32m', 'Concluída ✔️', '\x1b[0m');
+  };
 })();

@@ -1,2 +1,5 @@
-#Ignore modules
+# Ignore modules
 node_modules/
+
+# Testes
+testes/
