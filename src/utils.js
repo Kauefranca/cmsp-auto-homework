@@ -8,7 +8,12 @@ const qs = require('qs')
 * @returns {object}
 */
 exports.getTokens = async (credentials) => {
-    var data = qs.stringify(credentials)
+    var data = qs.stringify({
+        realm: 'edusp',
+        plataform: 'webclient',
+        username: credentials.ra + credentials.digit + credentials.uf,
+        password: credentials.password
+    })
     const sessionToken = await axios({
         method: 'post',
         url: 'https://cmspweb.ip.tv/',

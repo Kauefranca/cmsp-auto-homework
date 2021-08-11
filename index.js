@@ -14,7 +14,7 @@ const credentials = {
   "ra": "000000000000",
   "digit": "0",
   "uf": "sp",
-  "code": "abcd1234"
+  "password": "abcd1234"
 };
 
 ;(async () => {
