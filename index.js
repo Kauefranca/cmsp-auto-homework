@@ -1,4 +1,4 @@
-const fs = require('fs');
+const prompt = require('prompt-sync')({sigint: true});
 const utils = require('./src/utils')
 
 Object.size = function(obj) {
@@ -11,10 +11,10 @@ Object.size = function(obj) {
 };
 
 const credentials = { 
-  "ra": "000000000000",
-  "digit": "0",
+  "ra": prompt('Seu RA: '),
+  "digit": prompt('Digito do RA: '),
   "uf": "sp",
-  "password": "abcd1234"
+  "password": prompt('Senha do app CMSP Web: ')
 };
 
 ;(async () => {

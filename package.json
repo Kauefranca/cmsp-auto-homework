@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.1",
+    "prompt-sync": "^4.2.0",
     "qs": "^6.10.1"
   },
   "scripts": {

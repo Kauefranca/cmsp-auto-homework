@@ -25,7 +25,7 @@ exports.getTokens = async (credentials) => {
         return res.headers['set-cookie'][0].split(';')[0]
     }).catch((err) => err);
 
-    if (sessionToken instanceof Error) return { statusCode: 404 }
+    if (sessionToken instanceof Error || !sessionToken.split('=')[1]) return { statusCode: 404 }
     
     const rooms = await axios({
         method: 'post',
