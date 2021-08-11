@@ -16,7 +16,7 @@ Programa que responde todas as atividades do site CMSP com 100% de precisão.
 
 ## Utilização
 
-Mude os dados do json credentials em ./database e depois execute o seguinte comando:
+Mude os dados do objeto credentials no arquivo index.js e depois execute o seguinte comando:
 
 ```bash
 > node index.js
