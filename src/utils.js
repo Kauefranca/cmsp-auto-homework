@@ -95,19 +95,22 @@ getTaskAnswer = async (taskId, xApiKey) => {
         return res.data
     });
 
-    var answer = {
-        answers: {}
-    };
+    var answers = {};
 
     for (item in task.questions) {
         if (task.questions[item].type == 'single') {
+            answers[task.questions[item].id] = {
+                answer: {},
+                question_id: task.questions[item].id,
+                question_type: task.questions[item].type
+            }
             for (option in task.questions[item].options) {
-                answer.questionID = task.questions[item].id
-                answer.answers[option] = task.questions[item].options[option].answer
-            };
-        };
+                answers[task.questions[item].id].answer[option] = task.questions[item].options[option].answer
+            }
+        }
     };
-    return answer
+
+    return answers
 };
 
 /**
@@ -119,7 +122,7 @@ getTaskAnswer = async (taskId, xApiKey) => {
 * @returns {object}
 */
 exports.answerTask = async (taskId, xApiKey, room) => {
-    var { answers, questionID } = await getTaskAnswer(taskId, xApiKey);
+    var answers = await getTaskAnswer(taskId, xApiKey);
 
     await axios({
         method: 'post',
@@ -130,13 +133,7 @@ exports.answerTask = async (taskId, xApiKey, room) => {
         },
         data: JSON.stringify({
             "accessed_on": "room",
-            "answers": {
-                [questionID]: {
-                "answer": answers,
-                "question_id": questionID,
-                "question_type": "single",
-                }
-            },
+            "answers": answers,
             "duration": getRandomInt(10, 60),
             "executed_on": room
           })
