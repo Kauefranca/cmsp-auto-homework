@@ -140,6 +140,10 @@ exports.answerTask = async (taskId, xApiKey, room) => {
     });
 };
 
+exports.sleep = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
