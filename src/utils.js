@@ -98,7 +98,7 @@ getTaskAnswer = async (taskId, xApiKey) => {
     var answers = {};
 
     for (item in task.questions) {
-        if (task.questions[item].type == 'single') {
+        if (task.questions[item].type == 'single' || task.questions[item].type == 'multi') {
             answers[task.questions[item].id] = {
                 answer: {},
                 question_id: task.questions[item].id,
@@ -123,21 +123,23 @@ getTaskAnswer = async (taskId, xApiKey) => {
 */
 exports.answerTask = async (taskId, xApiKey, room) => {
     var answers = await getTaskAnswer(taskId, xApiKey);
-
-    await axios({
-        method: 'post',
-        url: `https://edusp-api.ip.tv/tms/task/${taskId}/answer`,
-        headers: {
-            'x-api-key': xApiKey,
-            'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-            "accessed_on": "room",
-            "answers": answers,
-            "duration": getRandomInt(10, 60),
-            "executed_on": room
-          })
-    });
+    
+    try {
+        await axios({
+            method: 'post',
+            url: `https://edusp-api.ip.tv/tms/task/${taskId}/answer`,
+            headers: {
+                'x-api-key': xApiKey,
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                "accessed_on": "room",
+                "answers": answers,
+                "duration": getRandomInt(10, 60),
+                "executed_on": room
+              })
+        });
+    } catch {}
 };
 
 exports.sleep = (time) => {
