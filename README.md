@@ -29,7 +29,3 @@ Se encontrar algum problema sinta-se a vontade para reporta-lo na aba [issues](h
 ## Licença
 
 [MIT](https://github.com/Kauefranca/cmsp-auto-homework/blob/main/LICENSE)
-
-## AVISOS
-
-O USO DESSE PROGRAMA É DE TOTAL RESPONSABILIDADE DO USUÁRIO.
