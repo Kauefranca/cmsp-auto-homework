@@ -140,9 +140,15 @@ exports.answerTask = async (taskId, xApiKey, room) => {
               })
         });
     } catch (e) {
-        if (e.response.data.errors[0].message == 'task already answered by user') return;
-        console.log(e.response.data.errors);
-        console.log('Se por acaso você ver esse erro mande me da um salve no zip zop');
+        try {
+            if (e.response.data.errors[0].message == 'task already answered by user') return;
+            console.log(e.response.data.errors);
+            console.log('Se por acaso você ver esse erro mande me da um salve no zip zop');
+        }
+        catch {
+            console.log(e.response.data.errors);
+            console.log('Se por acaso você ver esse erro mande me da um salve no zip zop');
+        }
     }
 };
 
