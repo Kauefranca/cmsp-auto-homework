@@ -66,7 +66,7 @@ const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task'
 exports.getTasks = async (xApiKey, room) => {
     const tasks = await axios({
         method: 'get',
-        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=214&limit=500&offset=0&without_answer=true`,
+        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=213&publication_target=214&limit=500&offset=0&without_answer=true`,
         headers: {
           'x-api-key': xApiKey
         }
@@ -140,6 +140,7 @@ exports.answerTask = async (taskId, xApiKey, room) => {
               })
         });
     } catch (e) {
+        if (e.response.data.errors[0].message == 'task already answered by user') return;
         console.log(e.response.data.errors);
         console.log('Se por acaso você ver esse erro mande me da um salve no zip zop');
     }
