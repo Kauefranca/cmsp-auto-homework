@@ -51,7 +51,7 @@ exports.getTokens = async (credentials) => {
         return res.data
     });
 
-    return { xApiKey: info.auth_token, room: rooms.data.rooms[0].name, statusCode: '200' }
+    return { xApiKey: info.auth_token, rooms: rooms.data.rooms, statusCode: '200' }
 };
 
 const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task'
@@ -66,7 +66,7 @@ const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task'
 exports.getTasks = async (xApiKey, room) => {
     const tasks = await axios({
         method: 'get',
-        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=214&limit=100&offset=0&without_answer=true`,
+        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=214&limit=500&offset=0&without_answer=true`,
         headers: {
           'x-api-key': xApiKey
         }
@@ -139,7 +139,10 @@ exports.answerTask = async (taskId, xApiKey, room) => {
                 "executed_on": room
               })
         });
-    } catch {}
+    } catch (e) {
+        console.log(e.response.data.errors);
+        console.log('Se por acaso você ver esse erro mande me da um salve no zip zop');
+    }
 };
 
 exports.sleep = (time) => {
