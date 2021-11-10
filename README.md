@@ -22,8 +22,6 @@ Apenas escreva:
 > node index.js
 ```
 
-Obs: o estado padrão esta definido como SP porque só testei nele, não tenho certeza se irá funcionar em outros.
-
 Se encontrar algum problema sinta-se a vontade para reporta-lo na aba [issues](https://github.com/Kauefranca/cmsp-auto-homework/issues)
 
 ## Licença

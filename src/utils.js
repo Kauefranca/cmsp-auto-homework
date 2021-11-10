@@ -22,7 +22,7 @@ exports.getTokens = async (credentials) => {
         },
         data: data
     }).then((res) => {
-        return res.headers['set-cookie'][0].split(';')[0]
+        return res.headers['set-cookie'][0].split(';')[0];
     }).catch((err) => err);
 
     if (sessionToken instanceof Error || !sessionToken.split('=')[1]) return { statusCode: 404 }
@@ -36,7 +36,19 @@ exports.getTokens = async (credentials) => {
         },
         data: 'data=getRoomsList'
     }).then((res) => {
-        return res.data
+        return res.data;
+    });
+
+    const grade = await axios({
+        method: 'post',
+        url: 'https://cmspweb.ip.tv/g/getChannelCategories',
+        headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Cookie': sessionToken
+        },
+        data: 'data=getChannelCategories'
+    }).then((res) => {
+        return res.data;
     });
 
     const info = await axios({
@@ -48,13 +60,13 @@ exports.getTokens = async (credentials) => {
         },
         data: 'data=getInitial'
     }).then((res) => {
-        return res.data
+        return res.data;
     });
 
-    return { xApiKey: info.auth_token, rooms: rooms.data.rooms, statusCode: '200' }
+    return { xApiKey: info.auth_token, rooms: rooms.data.rooms, grade: grade[0].name, statusCode: '200' }
 };
 
-const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task'
+const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task';
 
 /**
 * Get object with all tasks.
@@ -63,18 +75,18 @@ const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task'
 * @param {string} room
 * @returns {object}
 */
-exports.getTasks = async (xApiKey, room) => {
+exports.getTasks = async (xApiKey, room, gradeList) => {
     const tasks = await axios({
         method: 'get',
-        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=213&publication_target=214&limit=500&offset=0&without_answer=true`,
+        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=${gradeList}&limit=500&offset=0&without_answer=true`,
         headers: {
           'x-api-key': xApiKey
         }
     }).then((res) => {
-        return res.data
+        return res.data;
     });
 
-    return tasks
+    return tasks;
 };
 
 /**
@@ -92,7 +104,7 @@ getTaskAnswer = async (taskId, xApiKey) => {
           'x-api-key': xApiKey
         }
     }).then((res) => {
-        return res.data
+        return res.data;
     });
 
     var answers = {};
@@ -110,7 +122,7 @@ getTaskAnswer = async (taskId, xApiKey) => {
         }
     };
 
-    return answers
+    return answers;
 };
 
 /**

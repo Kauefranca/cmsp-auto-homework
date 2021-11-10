@@ -1,23 +1,23 @@
 {
   "name": "cmsp-auto-homework",
-  "version": "1.1.0",
-  "description": "Bot que responde todas as atividades do site CMSP(respostas aleatórias) usando o modulo puppeteer do javascript.",
+  "version": "2.0.0",
+  "description": "Bot que responde todas as atividades do aplicativo CMSP usando o engenharia reversa.",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.1",
-    "prompt-sync": "^4.2.0",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "readline-sync": "^1.4.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kauefranca/cmsp-auto-homework.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Kauê França",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Kauefranca/cmsp-auto-homework/issues"
   },
