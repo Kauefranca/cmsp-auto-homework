@@ -26,7 +26,7 @@ const credentials = {
 ;(async () => {
 	const { xApiKey, grade, rooms, statusCode } = await utils.getTokens(credentials);
 	if (statusCode != 200) return console.log('\x1b[31m', 'Erro: Usuário não encontrado, verifique suas credenciais e tente novamente.', '\x1b[0m');
-	var taskList = await utils.getTasks(xApiKey, rooms[0].name, gradesIndexes[grade]);
+	var taskList = await utils.getTasks(xApiKey, rooms, gradesIndexes[grade]);
 
 	if (taskList.length <= 0) return console.log('\x1b[31m', 'Não encontrei nenhuma tarefa :/', '\x1b[0m');
 	console.log('\x1b[31m',`${taskList.length} tarefa(s) encontradas.`, '\x1b[0m');

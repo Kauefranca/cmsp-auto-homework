@@ -72,19 +72,33 @@ const TASK_BASE_URL = 'https://edusp-api.ip.tv/tms/task';
 * Get object with all tasks.
 *
 * @param {string} xApiKey
-* @param {string} room
+* @param {string} rooms
 * @returns {object}
 */
-exports.getTasks = async (xApiKey, room, gradeList) => {
-    const tasks = await axios({
+exports.getTasks = async (xApiKey, rooms, gradeList) => {
+    var tasks = [];
+    
+    tasks = [].concat(tasks, await axios({
         method: 'get',
-        url: `${TASK_BASE_URL}?type=task&publication_target=${room}&publication_target=${gradeList}&limit=500&offset=0&without_answer=true`,
+        url: `${TASK_BASE_URL}?type=task&publication_target=${gradeList}&limit=500&offset=0&without_answer=true`,
         headers: {
           'x-api-key': xApiKey
         }
     }).then((res) => {
         return res.data;
-    });
+    }));
+
+    for (let { name } of rooms) {
+        tasks = [].concat(tasks, await axios({
+            method: 'get',
+            url: `${TASK_BASE_URL}?type=task&publication_target=${name}&limit=500&offset=0&without_answer=true`,
+            headers: {
+              'x-api-key': xApiKey
+            }
+        }).then((res) => {
+            return res.data;
+        }));
+    }
 
     return tasks;
 };
