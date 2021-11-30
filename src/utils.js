@@ -10,7 +10,7 @@ const qs = require('qs')
 exports.getTokens = async (credentials) => {
     var data = qs.stringify({
         realm: 'edusp',
-        plataform: 'webclient',
+        platform: 'webclient',
         username: credentials.ra + credentials.digit + credentials.uf,
         password: credentials.password
     })
