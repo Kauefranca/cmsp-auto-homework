@@ -1,6 +1,6 @@
 # CMSP Auto-Homework
 
-# AVISO‼
+# AVISO!!!
 Este repositório foi descontinuado e arquivado.
 A partir de 01/2022, este projeto não receberá mais atualizações ou suporte.
 
