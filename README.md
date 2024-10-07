@@ -1,5 +1,11 @@
 # CMSP Auto-Homework
 
+# AVISO ‼
+Este repositório foi descontinuado e arquivado.
+A partir de 01/2022, este projeto não receberá mais atualizações ou suporte.
+
+_________________
+
 Programa que responde todas as atividades do site CMSP com 100% de precisão.
 
 # Requisitos
